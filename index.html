@@ -237,7 +237,7 @@
             }
         }
 
-        document.getElementById('login-btn').addEventListener('click', function(e) {
+       document.getElementById('login-btn').addEventListener('click', function(e) {
             e.preventDefault(); 
             
             var targetUrl = this.href; 
@@ -256,7 +256,20 @@
 
             setTimeout(() => {
                 window.location.href = targetUrl;
+
+                // เพิ่มการหน่วงเวลาเพื่อปิด Swal ป้องกันกรณี x-safari- เด้ง popup ถามแล้วสคริปต์หยุดทำงาน
+                setTimeout(() => {
+                    Swal.close();
+                }, 2500); 
+
             }, 800);
+        });
+
+        // ตรวจจับเมื่อผู้ใช้สลับแอป หรือหน้าต่างถูกซ่อน (เช่น สลับไป Safari)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                Swal.close(); // ปิด Loading เมื่อกลับมาที่หน้านี้
+            }
         });
 
         window.addEventListener('pageshow', function(event) {
